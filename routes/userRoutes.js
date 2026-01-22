@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const passport = require('passport');
 
 //api users register
 router.post('/register', async (req, res) =>{
@@ -16,7 +17,7 @@ router.post('/register', async (req, res) =>{
         //does email exist
         const userExists = await User.findOne({email});
         if (userExists) {
-            return res.status(400).json({message: 'Looks like that username has already been taken' });
+            return res.status(400).json({message: 'Looks like that email has already been taken' });
         }
         const newUser = await User.create({username, email, password});
 
@@ -39,9 +40,9 @@ router.post('/register', async (req, res) =>{
 //post api users login
 
 router.post('/login', async (req,res) => {
-    console.log('LOGIN BODY:', req.body);
-
+   
     try{
+        console.log('LOGIN BODY:', req.body);
         const {email, password} = req.body ;
 
         if(!email || !password) {
@@ -78,4 +79,22 @@ router.post('/login', async (req,res) => {
     }
 });
 
+//Github oauth
+
+    router.get(
+        '/auth/github',
+        passport.authenticate('github', {scope: ['user:email']})
+    );
+
+    //Sharpay evans says callbacks
+    router.get(
+        '/auth/github/callback',
+        passport.authenticate('github', {session:false}),
+        (req,res) => {
+            res.json({
+                message:'github login successful',
+                user: req.user,
+            });
+        }
+    );
 module.exports= router;
