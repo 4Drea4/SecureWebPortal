@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
 
 //if password exists
 userSchema.pre('save' ,async function () {
-    try{
+    
         //okay so if theres no pw skip the hash
         if(!this.password) return ;
 
@@ -39,14 +39,11 @@ userSchema.pre('save' ,async function () {
             const saltRounds = 10;
             this.password = await bcrypt.hash(this.password, saltRounds);
         }
-        next ();
-    }catch (error) {
-        next(error);
-    }
+       
         });
 
         // compare the passwords with an instance
-        userSchema.methods.isCorrectPassword = async funciton (regularpassword) {
+        userSchema.methods.isCorrectPassword = async function (regularpassword) {
             if(!this.password) return false;
             return bcrypt.compare(regularpassword, this.password);
         }
