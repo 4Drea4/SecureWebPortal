@@ -27,3 +27,12 @@ const userSchema = new mongoose.Schema({
         type:String
     }
 });
+
+//if password exists
+userSchema.pre('save' ,async function () {
+    try{
+        //okay so if theres no pw skip the hash
+        if(!this.password) return ;
+
+    }
+})
