@@ -7,3 +7,13 @@ const bookmarkRoutes = require('./routes/bookmarkRoutes');
 const userRoutes = require('./routes/userRoutes');
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+
+//middleware
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+
+//middleware for passport
+app.use(passport.initialize());
+
+connectDB();
