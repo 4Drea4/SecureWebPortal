@@ -47,7 +47,7 @@ router.post('/login', async (req,res) => {
         }
         const user = await User.findOne({email});
         if (!user) {
-            return res.status(400).json({message: 'Missing email or password'})
+            return res.status(400).json({message: 'Missing email or password'});
         }
 
         const correctPw = await user.isCorrectPassword(password);
