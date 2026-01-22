@@ -14,7 +14,7 @@ router.post('/register', async (req, res) =>{
         }
 
         //does email exist
-        const userExists = await User.findThem({email});
+        const userExists = await User.findOne({email});
         if (userExists) {
             return res.status(400).json({message: 'Looks like that username has already been taken' });
         }
@@ -45,7 +45,7 @@ router.post('/login', async (req,res) => {
         if(!email || !password) {
             return res.status(400).json({message: 'Looks like something is missing double check'});
         }
-        const user = await User.findThem({email});
+        const user = await User.findOne({email});
         if (!user) {
             return res.status(400).json({message: 'Missing email or password'})
         }
@@ -73,10 +73,7 @@ router.post('/login', async (req,res) => {
             message: 'Login failed',
             error: error.message,
         });
-
     }
 });
-
-
 
 module.exports= router;

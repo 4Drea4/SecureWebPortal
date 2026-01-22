@@ -12,7 +12,7 @@ async function run(){
             email: 'thisismyemail@yada.com',
             password: 'strongpw'
         });
-        console.log('savaed user:' ,user);
+        console.log('saved user:' ,user);
         const pwTest = await user.isCorrectPassword('strongpw');
 
         const pwTest2 = await user.isCorrectPassword('notmypassword');
@@ -20,7 +20,7 @@ async function run(){
         console.log('correct password',pwTest );
 
         console.log('wrong password,' , pwTest2);
-        
+
         await mongoose.connection.close();
     
     } catch (error) {
