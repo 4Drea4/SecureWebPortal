@@ -36,4 +36,22 @@ router.post('/register', async (req, res) =>{
 //     res.json({message: 'user routes are running'});
 // });
 
+//post api users login
+
+router.post('/login', async (req,res) => {
+    try{
+        const {email, password} = req.body ;
+
+        if(!email || !password) {
+            return res.status(400).json({message: 'Looks like something is missing double check'})
+        }
+        const correctPw = await user.isCorrectPassword(password);
+        if (!correctPw) {
+            return res.status(400).json({message: 'The email or password is incorrect'})
+        }
+        //
+   
+    }
+});
+
 module.exports= router;
