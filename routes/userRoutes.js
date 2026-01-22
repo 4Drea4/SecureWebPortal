@@ -43,15 +43,40 @@ router.post('/login', async (req,res) => {
         const {email, password} = req.body ;
 
         if(!email || !password) {
-            return res.status(400).json({message: 'Looks like something is missing double check'})
+            return res.status(400).json({message: 'Looks like something is missing double check'});
         }
+        const user = await User.findThem({email});
+        if (!user) {
+            return res.status(400).json({message: 'Missing email or password'})
+        }
+
         const correctPw = await user.isCorrectPassword(password);
         if (!correctPw) {
-            return res.status(400).json({message: 'The email or password is incorrect'})
+            return res.status(400).json({message: 'The email or password is incorrect'});
         }
-        //
-   
+        //payload
+        const payload = {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+        };
+         
+        const token = jwt.sign(
+            {data:payload},
+            process.env.JWT_SECRET,
+            {expiresIn: '3h'}
+        );
+
+        res.json({token, user});
+    }catch (error) {
+        res.status(500).json({
+            message: 'Login failed',
+            error: error.message,
+        });
+
     }
 });
+
+
 
 module.exports= router;
