@@ -5,7 +5,10 @@ const User = require('../models/User');
 const passport = require('passport');
 
 //api users register
-router.post('/register', async (req, res) =>{
+router.post('/register', async (req, 
+    res) =>{
+        console.log('HEADERS:', req.headers['content-type']);
+        console.log('Login', req.body);
     try{
         const {username, email,password} = req.body;
 
