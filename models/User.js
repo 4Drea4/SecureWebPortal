@@ -34,5 +34,22 @@ userSchema.pre('save' ,async function () {
         //okay so if theres no pw skip the hash
         if(!this.password) return ;
 
+        //this will hash if it is a new user or the password is new
+        if (this.isNew || this.isModified('password')) {
+            const saltRounds = 10;
+            this.password = await bcrypt.hash(this.password, saltRounds);
+        }
+        next ();
+    }catch (error) {
+        next(error);
     }
-})
+        });
+
+        // compare the passwords with an instance
+        userSchema.methods.isCorrectPassword = async funciton (regularpassword) {
+            if(!this.password) return false;
+            return bcrypt.compare(regularpassword, this.password);
+        }
+
+        const User = mongoose.model('User', userSchema);
+        module.exports = User;
