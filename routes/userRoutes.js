@@ -53,7 +53,7 @@ router.post('/login', async (req,res) => {
         }
         const user = await User.findOne({email});
         if (!user) {
-            return res.status(400).json({message: 'Missing email or password'});
+            return res.status(400).json({message: 'This email or password is incorrect'});
         }
 
         const correctPw = await user.isCorrectPassword(password);
@@ -80,6 +80,15 @@ router.post('/login', async (req,res) => {
             error: error.message,
         });
     }
+});
+
+//middleware
+const authMiddleware = require('../utils/auth');
+router.get('/me',  authMiddleware, (req, res) => {
+    res.json({
+        message: 'malcom in the middlerware',
+        user: req.user
+    });
 });
 
 //Github oauth
