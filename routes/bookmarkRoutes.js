@@ -55,4 +55,39 @@ router.get('/id',  authMiddleware, async (req,res) => {
         }
 
 });
+//update
+router.put('/:id', authMiddleware, async (req,res) => {
+    try {
+        const updated = await Bookmark.findOneAndUpdate(
+            {
+                _id: req.params.id, user: req.user._id
+            },
+            req.body,
+            { new:true}
+        );
+        if (!updated) {
+            return res.status(404).json({message: 'Boomark can not be found'});
+        }
+        res.json(updated);
+    } catch (error) {
+        res.status(400).json({message: 'Uh-oh Could not update this bookmark'});
+    }
+});
+//delete
+    router.delete('/:id' , authMiddleware, async (req, res) => {
+        try{
+            const deleted = await Bookmark.findOneAndDelete({
+                _id: req.params.id,
+                user: req.user._id
+            });
+            if (!deleted){
+                return res.status(404).json({message: 'Can not find Bookmark'});
+            }
+            res.json({message: 'This bookmark has been deleted'});
+        } catch (error) {
+            res.status(400).json({message: 'Could not delete the bookmark'});
+        }
+    });
+
+
 module.exports = router;
