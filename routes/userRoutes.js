@@ -83,7 +83,7 @@ router.post('/login', async (req,res) => {
 });
 
 //middleware
-const authMiddleware = require('../utils/auth');
+const authMiddleware = require('../middleware/auth');
 router.get('/me',  authMiddleware, (req, res) => {
     res.json({
         message: 'malcom in the middlerware',
@@ -93,8 +93,7 @@ router.get('/me',  authMiddleware, (req, res) => {
 
 //Github oauth
 
-    router.get(
-        '/auth/github',
+    router.get( '/auth/github',
         passport.authenticate('github', {scope: ['user:email']})
     );
 
@@ -103,10 +102,18 @@ router.get('/me',  authMiddleware, (req, res) => {
         '/auth/github/callback',
         passport.authenticate('github', {session:false}),
         (req,res) => {
-            res.json({
-                message:'github login successful',
-                user: req.user,
-            });
+            const payload ={
+                _id: req.user._id,
+                username: req.user.username,
+                email: req.user.email,
+            };
+            const token = jwt.sign(
+                {data: payload} ,
+                process.env.JWT_SECRET,
+                {expiresIn: '3h'}
+            );
+            res.json({token, user: req.user });
         }
     );
-module.exports= router;
+
+    module.exports = router;

@@ -27,6 +27,6 @@ app.use('/api/users', userRoutes);
 // app.use('/api/bookmarks', bookmarkRoutes);
 
 app.listen(PORT, ()=> {
-    console.log(`Serve is running on ${PORT}`);
+    console.log(`Server is running on ${PORT}`);
 });
 
