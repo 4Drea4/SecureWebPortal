@@ -4,10 +4,10 @@ const router = express.Router();
 const Bookmark = require('../models/Bookmark');
 const authMiddleware = require('../middleware/auth');
 
-//test
-router.get('/ping', (req, res) => {
-    res.json({ message: 'bookmark routes alive' });
-  });
+//test cause i had broke something
+// router.get('/ping', (req, res) => {
+//     res.json({ message: 'bookmark routes alive' });
+//   });
 //users create a bookmark and this way is protected by making it for the user thats logged in
 router.post ('/', authMiddleware, async (req, res) =>{
     try {
@@ -37,5 +37,22 @@ router.get('/', authMiddleware, async (req,res) => {
         res.status(500).json({message: 'Coult not get your bookmarks', error:error.message});
     }
     
+});
+
+//boomark that belongs to the user
+router.get('/id',  authMiddleware, async (req,res) => {
+    try{
+        const bookmark = await Bookmark.findOne({
+            _id: req.params.id,
+            user: req.user._id
+        });
+            if (!bookmark) {
+                return res.status(400).json({message:"Can't find bookmark"})
+            }
+            res.json(bookmark);
+        } catch (error) {
+            res.status(400).json({message: 'This bookmark ID isnt right!'});
+        }
+
 });
 module.exports = router;
