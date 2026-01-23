@@ -4,6 +4,10 @@ const router = express.Router();
 const Bookmark = require('../models/Bookmark');
 const authMiddleware = require('../middleware/auth');
 
+//test
+router.get('/ping', (req, res) => {
+    res.json({ message: 'bookmark routes alive' });
+  });
 //users create a bookmark and this way is protected by making it for the user thats logged in
 router.post ('/', authMiddleware, async (req, res) =>{
     try {
