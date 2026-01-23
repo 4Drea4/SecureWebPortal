@@ -3,7 +3,7 @@ const passport = require('passport');
 const express = require('express');
 const connectDB = require('./config/connection');
 require('./config/passport'); 
-// const bookmarkRoutes = require('./routes/bookmarkRoutes');
+const bookmarkRoutes = require('./routes/bookmarkRoutes');
 const userRoutes = require('./routes/userRoutes');
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -24,7 +24,7 @@ app.get('/', (req,res)=>{
 
 //my routes
 app.use('/api/users', userRoutes);
-// app.use('/api/bookmarks', bookmarkRoutes);
+app.use('/api/bookmarks', bookmarkRoutes);
 
 app.listen(PORT, ()=> {
     console.log(`Server is running on ${PORT}`);

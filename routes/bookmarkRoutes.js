@@ -23,3 +23,15 @@ router.post ('/', authMiddleware, async (req, res) =>{
         res.status(400).json({message: "Uh Oh your bookmark could not be created", error : error.message})
     }
 });
+
+//bookmarks for the user that is logged in
+router.get('/', authMiddleware, async (req,res) => {
+    try{
+        const bookmarks = await Bookmark.find({user: req.user._id}).sort({createdAt: -1});
+        res.json(bookmarks);
+    } catch (error) {
+        res.status(500).json({message: 'Coult not get your bookmarks', error:error.message});
+    }
+    
+});
+module.exports = router;
