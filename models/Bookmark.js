@@ -10,3 +10,6 @@ const bookmarkSchema = new mongoose.Schema(
     },
     {timestamps: true}
 );
+
+const Bookmark = mongoose.model('Bookmark', bookmarkSchema);
+modeule.exports = Bookmark;
