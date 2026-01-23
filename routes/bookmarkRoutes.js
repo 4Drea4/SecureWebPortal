@@ -40,7 +40,7 @@ router.get('/', authMiddleware, async (req,res) => {
 });
 
 //boomark that belongs to the user
-router.get('/id',  authMiddleware, async (req,res) => {
+router.get('/:id',  authMiddleware, async (req,res) => {
     try{
         const bookmark = await Bookmark.findOne({
             _id: req.params.id,
