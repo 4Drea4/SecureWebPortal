@@ -5,7 +5,7 @@ function authMiddleware(req, res, next) {
 
     //bearer
     if (token) {
-        token = token.split('').pop().trim();
+        token = token.split(' ').pop().trim();
 
     }
     if (!token){

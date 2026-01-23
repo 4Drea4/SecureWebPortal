@@ -25,6 +25,12 @@ passport.use(
                     email,
                     githubId: profile.id,
                 });
+            } else {
+                //so if my user exists  but doesnt have a github id yet this will give them one
+                if (!user.githubId) {
+                    user.githubId = profile.id;
+                    await user.save();
+                }
             }
             return done(null,user);
         }catch (error) {
